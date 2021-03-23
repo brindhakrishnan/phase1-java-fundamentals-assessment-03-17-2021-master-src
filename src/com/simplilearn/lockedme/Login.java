@@ -98,7 +98,7 @@ public class Login {
 		//output.close();
 	}
 	
-	public static boolean loginUser() {
+	public static void loginUser() {
 		System.out.println("==========================================");
 		System.out.println("*					*");
 		System.out.println("*   WELCOME TO LOGIN PAGE	 *");
@@ -113,15 +113,20 @@ public class Login {
 		System.out.println("Enter Password :");
 		String inpPassword = keyboard.next();
 		
+		boolean found = false;
+		
 		//if the credentials are correct for a registered user, then login is successful
 		if(validateUserCredential(inpUsername,inpPassword)) {
-			return true;
+			found = true;
 		}
 		else {
-			return false;
+			found = false;
+		}
+		
+		if (found) {
+			LockedMe.lockerOptions(inpUsername);
 		}
 				
-		
 	}
 	
 	//Function that validates the LockedMe app credentials with the database file
@@ -170,7 +175,7 @@ public class Login {
 			
 	}
 	
-	public static boolean createLockedMeFile(String filename){
+	/*public static boolean createLockedMeFile(String filename){
 		
 		File file = new File(path+filename+".txt");
 		
@@ -192,6 +197,30 @@ public class Login {
 					return false;
 				}
 		}
+	*/
 	
+	public static boolean createLockedMeFile(String filename){
+		
+		File file = new File(path+filename);
+		//create new folder in the path
+		boolean folder = file.mkdir();
+		
+			try {
+			
+				if(folder) {
+					System.out.println("New! User Registration Successful !");
+					return true;
+					
+				} else {
+					System.out.println("User already exists. Try again !");
+					throw new IOException("User Registration Failed !");
+					//return false;
+				}
+								
+				} catch (IOException e) {
+					System.out.println("User Registration Failed !");
+					return false;
+				}
+		}
 	
 }
