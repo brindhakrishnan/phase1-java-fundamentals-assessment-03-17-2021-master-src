@@ -98,6 +98,7 @@ public class Login {
 		//output.close();
 	}
 	
+	//Function that displays the login page
 	public static void loginUser() {
 		System.out.println("==========================================");
 		System.out.println("*					*");
@@ -174,8 +175,8 @@ public class Login {
 		}
 			
 	}
-	
-	/*public static boolean createLockedMeFile(String filename){
+	/*
+	public static boolean createLockedMeFile(String filename){
 		
 		File file = new File(path+filename+".txt");
 		
@@ -183,7 +184,7 @@ public class Login {
 			try {
 			
 				if(file.createNewFile()) {
-					System.out.println("User Registration Successful !");
+					System.out.println("User Registration Successful !123");
 					return true;
 					
 				} else {
@@ -208,7 +209,7 @@ public class Login {
 			try {
 			
 				if(folder) {
-					System.out.println("New! User Registration Successful !");
+					System.out.println("User Registration Successful !");
 					return true;
 					
 				} else {

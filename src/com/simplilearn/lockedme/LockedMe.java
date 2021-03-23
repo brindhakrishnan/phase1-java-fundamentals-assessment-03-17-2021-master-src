@@ -8,8 +8,8 @@ public class LockedMe {
 	private static Scanner input;
 	
 	public static void lockerOptions(String inpUsername) {
-		System.out.println("1 . FETCH ALL STORED CREDENTIALS ");
-		System.out.println("2 . STORED CREDENTIALS ");
+		System.out.println("1. Add Credentials ");
+		System.out.println("2. Delete Credentials ");
 		int option = keyboard.nextInt();
 		switch(option) {
 			case 1 : 
