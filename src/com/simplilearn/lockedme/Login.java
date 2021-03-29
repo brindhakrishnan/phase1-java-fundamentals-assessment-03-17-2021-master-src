@@ -3,7 +3,7 @@ package com.simplilearn.lockedme;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
@@ -17,16 +17,19 @@ public class Login {
 	//private static PrintWriter output;
 	//private static PrintWriter lockerOutput;
 	//model to store data.
-	//private static Users users;
+	protected static Users users;
+//	private static boolean loginFlag = false;
 //	private static UserCredentials userCredentials;
 	//File paths
-	private static String path = "/home/brindhakrishnan/eclipse-workspace/phase1-java-fundamentals-assessment-03-17-2021-master-src/database/";
+	public static String path = "/home/brindhakrishnan/eclipse-workspace/phase1-java-fundamentals-assessment-03-17-2021-master-src/database/";
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	
+		users = new Users();
 		welcomeScreen();
 		signInOptions();
+
 	}
 	
 	//Create a welcome page with the below requirements:
@@ -65,6 +68,7 @@ public class Login {
 				System.out.println("Please select 1 OR 2");
 				break;
 		}
+//		System.out.println("Closing keyboard scanner");
 		keyboard.close();
 		
 	}
@@ -76,19 +80,21 @@ public class Login {
 		System.out.println("*					*");
 		System.out.println("==========================================");
 		
+		
 		System.out.println("Enter Username :");
 		String username = keyboard.next();
-		//users.setUsername(username);
-		
+		users.setUsername(username);
+				
 		System.out.println("Enter Password :");
 		String password = keyboard.next();
-		//users.setPassword(password);
+		users.setPassword(password);
+		
 		
 		//output.println(users.getUsername());
 		//output.println(users.getPassword());
 		
 		// Create a New File under the registered user
-		if(createLockedMeFile(username)) {
+		if(createLockedMeFolder(username)) {
 		// Store the LockedMe login creds into a database file
 			storeLockedMeCredentials(username,password); {	
 		}
@@ -109,14 +115,18 @@ public class Login {
 		//Get the username from user input
 		System.out.println("Enter Username :");
 		String inpUsername = keyboard.next();
+		users.setUsername(inpUsername);
 		
 		//Get the password from user input
 		System.out.println("Enter Password :");
 		String inpPassword = keyboard.next();
+		users.setPassword(inpPassword);
+		
 		
 		boolean found = false;
 		
 		//if the credentials are correct for a registered user, then login is successful
+		
 		if(validateUserCredential(inpUsername,inpPassword)) {
 			found = true;
 		}
@@ -127,6 +137,7 @@ public class Login {
 		if (found) {
 			LockedMe.lockerOptions(inpUsername);
 		}
+		
 				
 	}
 	
@@ -200,7 +211,7 @@ public class Login {
 		}
 	*/
 	
-	public static boolean createLockedMeFile(String filename){
+	public static boolean createLockedMeFolder(String filename){
 		
 		File file = new File(path+filename);
 		//create new folder in the path
