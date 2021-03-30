@@ -11,16 +11,9 @@ public class Login {
 	
 	//input data
 	private static Scanner keyboard;
-	//private static Scanner input;
 	private static Scanner lockerInput;
-	//output data 
-	//private static PrintWriter output;
-	//private static PrintWriter lockerOutput;
-	//model to store data.
+	//Users data
 	protected static Users users;
-//	private static boolean loginFlag = false;
-//	private static UserCredentials userCredentials;
-	//File paths
 	public static String path = "/home/brindhakrishnan/eclipse-workspace/phase1-java-fundamentals-assessment-03-17-2021-master-src/database/";
 	
 	public static void main(String[] args) {
@@ -60,7 +53,9 @@ public class Login {
 		System.out.println("2. Login! If you're already a Member ");
 		int option = keyboard.nextInt();
 		switch(option) {
-			case 1 : registerUser();
+			case 1 : if(registerUser()) {
+				loginUser();
+			}
 					break;
 			case 2 : loginUser();
 					break;
@@ -68,12 +63,12 @@ public class Login {
 				System.out.println("Please select 1 OR 2");
 				break;
 		}
-//		System.out.println("Closing keyboard scanner");
+
 		keyboard.close();
 		
 	}
 	
-	public static void registerUser() {
+	public static boolean registerUser() {
 		System.out.println("==========================================");
 		System.out.println("*					*");
 		System.out.println("*   WELCOME TO REGISTRATION PAGE	*");
@@ -89,19 +84,13 @@ public class Login {
 		String password = keyboard.next();
 		users.setPassword(password);
 		
-		
-		//output.println(users.getUsername());
-		//output.println(users.getPassword());
-		
 		// Create a New File under the registered user
-		if(createLockedMeFolder(username)) {
+		if(createLockedMeFolder(users.getUsername())) {
 		// Store the LockedMe login creds into a database file
-			storeLockedMeCredentials(username,password); {	
+			storeLockedMeCredentials(users.getUsername(),users.getPassword()); 	
+			return true;
 		}
-			
-		}
-		
-		//output.close();
+		return false;
 	}
 	
 	//Function that displays the login page
@@ -127,7 +116,7 @@ public class Login {
 		
 		//if the credentials are correct for a registered user, then login is successful
 		
-		if(validateUserCredential(inpUsername,inpPassword)) {
+		if(validateUserCredential(users.getUsername(),users.getPassword())) {
 			found = true;
 		}
 		else {
@@ -135,10 +124,9 @@ public class Login {
 		}
 		
 		if (found) {
-			LockedMe.lockerOptions(inpUsername);
+			LockedMe.lockerOptions(users.getUsername());
 		}
 		
-				
 	}
 	
 	//Function that validates the LockedMe app credentials with the database file
@@ -172,44 +160,18 @@ public class Login {
 		try {
 			
 			if(file.createNewFile()) {
-			//	System.out.println("File is created. !");
-			} else {
-			//	System.out.println("Database Error");
-			}
+			
+			} 
 			// Write Content
 			FileWriter writer = new FileWriter(file,true);
 			writer.append(username+","+password+"\n");
 			writer.close();
-			
+		
 		} catch (IOException e) {
 			System.out.println("Database entry failed!");
 		}
 			
 	}
-	/*
-	public static boolean createLockedMeFile(String filename){
-		
-		File file = new File(path+filename+".txt");
-		
-		//create new file
-			try {
-			
-				if(file.createNewFile()) {
-					System.out.println("User Registration Successful !123");
-					return true;
-					
-				} else {
-					System.out.println("User already exists. Try again !");
-					throw new IOException("User Registration Failed !");
-					//return false;
-				}
-								
-				} catch (IOException e) {
-					System.out.println("User Registration Failed !");
-					return false;
-				}
-		}
-	*/
 	
 	public static boolean createLockedMeFolder(String filename){
 		

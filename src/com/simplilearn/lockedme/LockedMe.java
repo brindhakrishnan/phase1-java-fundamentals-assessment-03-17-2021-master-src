@@ -16,9 +16,9 @@ public class LockedMe {
 	public static void lockerOptions(String inpUsername) {
 		
 		appInput = new Scanner(System.in);
-		int option;
+		int mainoption;
+
 		do {
-			
 		System.out.println("==========================================");
 		System.out.println("*					*");
 		System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
@@ -26,36 +26,68 @@ public class LockedMe {
 		System.out.println("==========================================");
 			
 		System.out.println("1. Retrieve All Details ");
-		System.out.println("2. Add Credentials ");
-		System.out.println("3. Delete Credentials ");
-		System.out.println("4. Search Credentials ");
-		System.out.println("5. Exit ");
-		option = appInput.nextInt();
-		switch(option) {
+		System.out.println("2. Manage Credentials ");
+		System.out.println("3. Logout ");
+		mainoption = appInput.nextInt();
+		switch(mainoption) {
 			case 1 : 
 				retrieveDetails(inpUsername);
 				break;
 			case 2 :
-				storeCredentials(inpUsername);
+				manageCredentials(inpUsername);
 				break;
 			case 3 : 
-				removeCredentials(inpUsername);
-				break;
-			case 4 :
-				fetchCredentials(inpUsername);
-				break;
-			case 5 : 
 				System.out.println("Exiting the Application");
 				break;
 			
 			default :
-				System.out.println("Please select 1 through 5");
+				System.out.println("Please select 1 to 3");
 				break;
 		}
-		}while(option != 5);
-
+		}while(mainoption != 3);
+				
 		appInput.close();
 	}
+	
+		private static boolean manageCredentials(String loggedInUser) {
+			appInput = new Scanner(System.in);
+			int suboption;
+			
+			do {
+				
+				System.out.println("==========================================");
+				System.out.println("*					*");
+				System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
+				System.out.println("*					*");
+				System.out.println("==========================================");
+					
+
+				System.out.println("1. Add Credentials ");
+				System.out.println("2. Delete Credentials ");
+				System.out.println("3. Search Credentials ");
+				System.out.println("4. Main Menu ");
+				suboption = appInput.nextInt();
+				switch(suboption) {
+					case 1 :
+						storeCredentials(loggedInUser);
+						break;
+					case 2 : 
+						removeCredentials(loggedInUser);
+						break;
+					case 3 :
+						fetchCredentials(loggedInUser);
+						break;
+					case 4 : 
+						break;
+					
+					default :
+						System.out.println("Please select 1 through 4");
+						break;
+				}
+				}while(suboption != 4);
+			return true;
+		
+		}
 	
 	//Business Specification - Retrieving the file names in an ascending order
 		private static void retrieveDetails(String loggedInUser) {
@@ -100,12 +132,12 @@ public class LockedMe {
 			
 			//******* Write a check for file exists with same name case sensitive here
 			//1. Search all the files in the folder
-			
+			/*
 			//File foldersearch = new File(path+"/"+loggedInUser);
 			//String[] filenames = foldersearch.list();
 			
 			//2. Compare if the details entered by the user match
-			/*
+			
 			for(String f : filenames) {
 				if(f.equalsIgnoreCase(credfile)) {
 					credfile = f;
@@ -207,6 +239,6 @@ public class LockedMe {
 							}
 					}
 				}
-				System.out.println("404 : File Not Found");
+				
 			}
 }
