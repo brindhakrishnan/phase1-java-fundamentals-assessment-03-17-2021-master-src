@@ -6,26 +6,33 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.String;
-import java.io.FileNotFoundException;
 
 public class LockedMe {
 	
 	private static Scanner appKeyboard;
 	private static Scanner appInput;
 	private static String path = "/home/brindhakrishnan/eclipse-workspace/phase1-java-fundamentals-assessment-03-17-2021-master-src/database/";
-		
+	
 	public static void lockerOptions(String inpUsername) {
 		
 		appInput = new Scanner(System.in);
+		int option;
+		do {
+			
+		System.out.println("==========================================");
+		System.out.println("*					*");
+		System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
+		System.out.println("*					*");
+		System.out.println("==========================================");
+			
 		System.out.println("1. Retrieve All Details ");
 		System.out.println("2. Add Credentials ");
 		System.out.println("3. Delete Credentials ");
 		System.out.println("4. Search Credentials ");
 		System.out.println("5. Exit ");
-		int option = appInput.nextInt();
+		option = appInput.nextInt();
 		switch(option) {
 			case 1 : 
-			//	Function that gets the details of all applications 
 				retrieveDetails(inpUsername);
 				break;
 			case 2 :
@@ -35,28 +42,23 @@ public class LockedMe {
 				removeCredentials(inpUsername);
 				break;
 			case 4 :
-			//	fetchCredentials(inpUsername);
+				fetchCredentials(inpUsername);
 				break;
 			case 5 : 
-			//	searchCredentials(inpUsername);
+				System.out.println("Exiting the Application");
 				break;
 			
 			default :
 				System.out.println("Please select 1 through 5");
 				break;
 		}
-//		System.out.println("Closing appInput scanner");
+		}while(option != 5);
+
 		appInput.close();
 	}
 	
 	//Business Specification - Retrieving the file names in an ascending order
 		private static void retrieveDetails(String loggedInUser) {
-						
-			System.out.println("==========================================");
-			System.out.println("*					*");
-			System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
-			System.out.println("*					*");
-			System.out.println("==========================================");
 			
 			//Create a file object that points to the user folder
 			File foldersearch = new File(path+"/"+loggedInUser);
@@ -84,13 +86,7 @@ public class LockedMe {
 			//read data from keyboard
 			appKeyboard = new Scanner(System.in);
 			File appFile;
-						
-			System.out.println("==========================================");
-			System.out.println("*					*");
-			System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
-			System.out.println("*					*");
-			System.out.println("==========================================");
-			
+
 			//Get the name of the application whose credentials needs to be stored
 			System.out.println("Enter the Application name whose credential needs to be stored:");
 			String application = appKeyboard.next();
@@ -105,23 +101,24 @@ public class LockedMe {
 			//******* Write a check for file exists with same name case sensitive here
 			//1. Search all the files in the folder
 			
-			File foldersearch = new File(path+"/"+loggedInUser);
-			String[] filenames = foldersearch.list();
+			//File foldersearch = new File(path+"/"+loggedInUser);
+			//String[] filenames = foldersearch.list();
 			
 			//2. Compare if the details entered by the user match
-			
+			/*
 			for(String f : filenames) {
 				if(f.equalsIgnoreCase(credfile)) {
 					credfile = f;
 				}
 			}
+			*/
 			try {
 					appFile = new File(path+loggedInUser+"/"+credfile);				
 					if(appFile.createNewFile()) {
 						System.out.println("New application entry created!");
 						//if its an existing application credentials then overwrite existing file	
 					}else {
-						System.out.println("Overwriting existing credentials!");
+						System.out.println("Failed to save credentials!");
 					}
 	
 					// Write Content
@@ -141,19 +138,12 @@ public class LockedMe {
 						
 		}
 		
-		//Business Specification - Option to add a user specified file to the application
+		//Business Specification - Option to delete a user specified file to the application
 		private static boolean removeCredentials(String loggedInUser) {
 			//read data from keyboard
 			appKeyboard = new Scanner(System.in);
-			
-			
-			System.out.println("==========================================");
-			System.out.println("*					*");
-			System.out.println("*   LOCKEDME.COM - THE SAFEST WAY TO STORE CREDENTIALS	*");
-			System.out.println("*					*");
-			System.out.println("==========================================");
-			
-			//Get the name of the application whose credentials needs to be stored
+	
+			//Get the name of the application whose credentials needs to be deleted
 			System.out.println("Enter the Application name whose credential needs to be deleted:");
 			String application = appKeyboard.next();
 			String credfile = application+".txt";
@@ -164,7 +154,7 @@ public class LockedMe {
 			File foldersearch = new File(path+"/"+loggedInUser);
 			String[] filenames = foldersearch.list();
 			
-			//2. Compare if the details entered by the user match
+			//2. Compare if the details entered by the user match - Linear Search
 
 			for(String f : filenames) {
 				if(f.equals(credfile)) {
@@ -175,8 +165,48 @@ public class LockedMe {
 			
 			 }
 	
-				System.out.println("File Not Found!");
+				System.out.println("404 : File Not Found!");
 				return false;
 		}
+		
+		//Business Specification - Option to search a user specified file from the application
+		private static void fetchCredentials(String loggedInUser) {
+			//read data from keyboard
+			appKeyboard = new Scanner(System.in);
+			Scanner fileInput;
 	
+			//Get the name of the application whose credentials needs to be retrieved
+			System.out.println("Enter the Application name whose credential needs to be retrieved:");
+			String application = appKeyboard.next();
+			String credfile = application+".txt";
+			File appFile = new File(path+loggedInUser+"/"+credfile);
+			
+			//1. Search all the files in the folder
+			
+			File foldersearch = new File(path+"/"+loggedInUser);
+			String[] filenames = foldersearch.list();
+			
+			//2. Compare if the details entered by the user match - Linear Search
+			
+				for(String f : filenames) {
+					//if Filenames match then create a Scanner to read the file
+					if(f.equals(credfile)) {
+						try {
+							fileInput = new Scanner(appFile);
+							
+							//Print the credentials stored in the file
+							System.out.println("Credentials are :: ");
+							while(fileInput.hasNext()) {
+								System.out.println(fileInput.next());
+								}
+							fileInput.close();
+							//return true;
+							
+							}catch(FileNotFoundException e) {
+								System.out.println("404 : File Not Found ");
+							}
+					}
+				}
+				System.out.println("404 : File Not Found");
+			}
 }
