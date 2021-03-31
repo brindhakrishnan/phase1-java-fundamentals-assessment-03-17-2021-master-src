@@ -37,7 +37,7 @@ public class LockedMe {
 				manageCredentials(inpUsername);
 				break;
 			case 3 : 
-				System.out.println("Exiting the Application");
+				System.out.println("You have been logged out");
 				break;
 			
 			default :
@@ -49,6 +49,7 @@ public class LockedMe {
 		appInput.close();
 	}
 	
+	//Business Specification - Sub menu for managing credentials - add, delete and view
 		private static boolean manageCredentials(String loggedInUser) {
 			appInput = new Scanner(System.in);
 			int suboption;
@@ -136,7 +137,8 @@ public class LockedMe {
 			//File foldersearch = new File(path+"/"+loggedInUser);
 			//String[] filenames = foldersearch.list();
 			
-			//2. Compare if the details entered by the user match
+			//2. Compare if the details entered by the user match. Below code is needed if you want to ignore case sensitivity
+			 * 
 			
 			for(String f : filenames) {
 				if(f.equalsIgnoreCase(credfile)) {
@@ -162,10 +164,10 @@ public class LockedMe {
 			}catch(IOException e) {
 				System.out.println("Failed to save credentials!");
 				e.printStackTrace();
-		//		return false;
+
 			}catch(Exception e) {
 				e.printStackTrace();
-		//		return false;
+
 			}
 						
 		}
@@ -212,6 +214,7 @@ public class LockedMe {
 			String application = appKeyboard.next();
 			String credfile = application+".txt";
 			File appFile = new File(path+loggedInUser+"/"+credfile);
+			boolean flag = false;
 			
 			//1. Search all the files in the folder
 			
@@ -231,13 +234,17 @@ public class LockedMe {
 							while(fileInput.hasNext()) {
 								System.out.println(fileInput.next());
 								}
+							flag = true;
 							fileInput.close();
-							//return true;
 							
 							}catch(FileNotFoundException e) {
 								System.out.println("404 : File Not Found ");
 							}
 					}
+						
+					}
+				if(!flag) {
+				System.out.println("Credentials not found!");
 				}
 				
 			}
